@@ -37,3 +37,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### IDE pessoal (Parte 2: arquivos de IDE fora do repositório) ###
+.idea/
