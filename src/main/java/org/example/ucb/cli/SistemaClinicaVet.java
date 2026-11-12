@@ -110,7 +110,7 @@ public class SistemaClinicaVet {
                 case 1:
                     System.out.println("\n--- Agendar Nova Consulta ---");
 
-                    System.out.print("Digite o ID do Animal para a consulta.html: ");
+                    System.out.print("Digite o ID do Animal para a consulta: ");
                     int idAnimalConsulta = leitor.lerInteiro();
 
                     Animal animalConsulta = repositorioDeAnimal.BuscarPorId(idAnimalConsulta);
@@ -142,7 +142,7 @@ public class SistemaClinicaVet {
                     List<Consulta> todasConsultas = repositorioDeConsulta.ListarConsulta();
 
                     if (todasConsultas == null || todasConsultas.isEmpty()) {
-                        System.out.println("Nenhuma consulta.html agendada.");
+                        System.out.println("Nenhuma consulta agendada.");
                     } else {
                         for (Consulta c : todasConsultas) {
                             System.out.println("--------------------");
@@ -157,7 +157,7 @@ public class SistemaClinicaVet {
 
                 case 3:
                     System.out.println("\n--- Buscar Consulta por ID ---");
-                    System.out.print("Digite o ID da consulta.html: ");
+                    System.out.print("Digite o ID da consulta: ");
                     int idBuscaConsulta = leitor.lerInteiro();
                     Consulta consultaEncontrada = repositorioDeConsulta.BuscarConsulta(idBuscaConsulta);
 
@@ -181,7 +181,7 @@ public class SistemaClinicaVet {
                     List<Consulta> consultasDoAnimal = repositorioDeConsulta.BuscarPorAnimal(idAnimalBusca);
 
                     if (consultasDoAnimal == null || consultasDoAnimal.isEmpty()) {
-                        System.out.println("Nenhuma consulta.html encontrada para o animal com ID " + idAnimalBusca);
+                        System.out.println("Nenhuma consulta encontrada para o animal com ID " + idAnimalBusca);
                     } else {
                         System.out.println("\n--- Consultas Encontradas para o Animal ID " + idAnimalBusca + " ---");
                         for (Consulta c : consultasDoAnimal) {
@@ -196,7 +196,7 @@ public class SistemaClinicaVet {
 
                 case 5:
                     System.out.println("\n--- Atualizar Diagnóstico da Consulta ---");
-                    System.out.print("Digite o ID da consulta.html que deseja atualizar: ");
+                    System.out.print("Digite o ID da consulta que deseja atualizar: ");
                     int idConsultaAtt = leitor.lerInteiro();
 
                     Consulta consultaAtt = repositorioDeConsulta.BuscarConsulta(idConsultaAtt);
@@ -216,10 +216,10 @@ public class SistemaClinicaVet {
 
                 case 6:
                     System.out.println("\n--- Cancelar (Deletar) Consulta ---");
-                    System.out.print("Digite o ID da consulta.html a ser deletada: ");
+                    System.out.print("Digite o ID da consulta a ser deletada: ");
                     int idConsultaDel = leitor.lerInteiro();
 
-                    System.out.print("Tem certeza que deseja deletar esta consulta.html (ID: " + idConsultaDel + ")? (S/N): ");
+                    System.out.print("Tem certeza que deseja deletar esta consulta (ID: " + idConsultaDel + ")? (S/N): ");
                     if (entrada.nextLine().equalsIgnoreCase("S")) {
                         boolean deletado = repositorioDeConsulta.deletarConsulta(idConsultaDel); //
                     } else {
@@ -443,9 +443,9 @@ public class SistemaClinicaVet {
         boolean sair = false;
         while (!sair) {
             System.out.println("\n--- Menu de Gerenciamento de Tratamentos ---");
-            System.out.println("1. Adicionar novo tratamento a uma consulta.html");
+            System.out.println("1. Adicionar novo tratamento a uma consulta");
             System.out.println("2. Buscar tratamento por ID");
-            System.out.println("3. Listar tratamentos de uma consulta.html");
+            System.out.println("3. Listar tratamentos de uma consulta");
             System.out.println("0. Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
 
@@ -455,7 +455,7 @@ public class SistemaClinicaVet {
                 case 1:
                     System.out.println("\n--- Adicionar Novo Tratamento ---");
 
-                    System.out.print("Digite o ID da consulta.html à qual este tratamento pertence: ");
+                    System.out.print("Digite o ID da consulta à qual este tratamento pertence: ");
                     int idConsulta = leitor.lerInteiro();
 
                     System.out.print("Digite a descrição do tratamento: ");
@@ -494,7 +494,7 @@ public class SistemaClinicaVet {
                     break;
                 case 3:
                     System.out.println("\n--- Listar Tratamentos por Consulta ---");
-                    System.out.print("Digite o ID da consulta.html para ver os tratamentos associados: ");
+                    System.out.print("Digite o ID da consulta para ver os tratamentos associados: ");
                     int idConsultaParaListar = leitor.lerInteiro();
 
                     List<Tratamento> tratamentosDaConsulta = repositorioDeTratamento.BuscarPorConsulta(idConsultaParaListar);
@@ -511,7 +511,7 @@ public class SistemaClinicaVet {
                         System.out.println("-----------------------------");
                     } else {
 
-                        System.out.println("\nNenhum tratamento encontrado para a consulta.html com o ID " + idConsultaParaListar + ".");
+                        System.out.println("\nNenhum tratamento encontrado para a consulta com o ID " + idConsultaParaListar + ".");
                     }
 
                     break;
