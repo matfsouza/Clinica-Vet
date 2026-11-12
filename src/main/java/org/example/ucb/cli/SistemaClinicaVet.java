@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class SistemaClinicaVet {
 
     private static final Scanner entrada = new Scanner(System.in);
+    private static final LeitorDeEntrada leitor = new LeitorDeEntrada(entrada, System.out);
     private static RepositorioDeTratamento repositorioDeTratamento;
     private static RepositorioDeEspecialidade repositorioDeEspecialidade;
     private static RepositorioDeAnimal repositorioDeAnimal;
@@ -56,8 +57,7 @@ public class SistemaClinicaVet {
             System.out.println("0. Sair do Sistema");
             System.out.print("Escolha uma área para gerenciar: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine(); // Limpa buffer
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
@@ -104,16 +104,14 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine(); // Limpa o buffer
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
                     System.out.println("\n--- Agendar Nova Consulta ---");
 
                     System.out.print("Digite o ID do Animal para a consulta.html: ");
-                    int idAnimalConsulta = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idAnimalConsulta = leitor.lerInteiro();
 
                     Animal animalConsulta = repositorioDeAnimal.BuscarPorId(idAnimalConsulta);
 
@@ -160,8 +158,7 @@ public class SistemaClinicaVet {
                 case 3:
                     System.out.println("\n--- Buscar Consulta por ID ---");
                     System.out.print("Digite o ID da consulta.html: ");
-                    int idBuscaConsulta = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idBuscaConsulta = leitor.lerInteiro();
                     Consulta consultaEncontrada = repositorioDeConsulta.BuscarConsulta(idBuscaConsulta);
 
                     if (consultaEncontrada != null) {
@@ -179,8 +176,7 @@ public class SistemaClinicaVet {
                 case 4:
                     System.out.println("\n--- Listar Consultas por Animal ---");
                     System.out.print("Digite o ID do Animal: ");
-                    int idAnimalBusca = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idAnimalBusca = leitor.lerInteiro();
 
                     List<Consulta> consultasDoAnimal = repositorioDeConsulta.BuscarPorAnimal(idAnimalBusca);
 
@@ -201,8 +197,7 @@ public class SistemaClinicaVet {
                 case 5:
                     System.out.println("\n--- Atualizar Diagnóstico da Consulta ---");
                     System.out.print("Digite o ID da consulta.html que deseja atualizar: ");
-                    int idConsultaAtt = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idConsultaAtt = leitor.lerInteiro();
 
                     Consulta consultaAtt = repositorioDeConsulta.BuscarConsulta(idConsultaAtt);
 
@@ -222,8 +217,7 @@ public class SistemaClinicaVet {
                 case 6:
                     System.out.println("\n--- Cancelar (Deletar) Consulta ---");
                     System.out.print("Digite o ID da consulta.html a ser deletada: ");
-                    int idConsultaDel = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idConsultaDel = leitor.lerInteiro();
 
                     System.out.print("Tem certeza que deseja deletar esta consulta.html (ID: " + idConsultaDel + ")? (S/N): ");
                     if (entrada.nextLine().equalsIgnoreCase("S")) {
@@ -257,8 +251,7 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine();
+            int opcao = leitor.lerInteiro();
             switch (opcao) {
                 case 1:
                     try {
@@ -359,8 +352,7 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine();
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
@@ -371,8 +363,7 @@ public class SistemaClinicaVet {
                         System.out.print("Nome: ");
                         String nome = entrada.nextLine();
                         System.out.print("Idade: ");
-                        int idade = entrada.nextInt();
-                        entrada.nextLine();
+                        int idade = leitor.lerInteiro();
                         System.out.print("Data de Graduação (dd/MM/yyyy): ");
                         String dataTexto = entrada.nextLine();
                         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -458,16 +449,14 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine(); // Limpa o buffer do scanner
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
                     System.out.println("\n--- Adicionar Novo Tratamento ---");
 
                     System.out.print("Digite o ID da consulta.html à qual este tratamento pertence: ");
-                    int idConsulta = entrada.nextInt();
-                    entrada.nextLine();
+                    int idConsulta = leitor.lerInteiro();
 
                     System.out.print("Digite a descrição do tratamento: ");
                     String descricao = entrada.nextLine();
@@ -487,8 +476,7 @@ public class SistemaClinicaVet {
                 case 2:
                     System.out.println("\n--- Buscar Tratamento por ID ---");
                     System.out.print("Digite o ID do tratamento que deseja buscar: ");
-                    int idParaBuscar = entrada.nextInt();
-                    entrada.nextLine(); // Limpa o buffer
+                    int idParaBuscar = leitor.lerInteiro();
                     Tratamento tratamentoEncontrado = repositorioDeTratamento.BuscarTratamento(idParaBuscar);
 
                     if (tratamentoEncontrado != null) {
@@ -507,8 +495,7 @@ public class SistemaClinicaVet {
                 case 3:
                     System.out.println("\n--- Listar Tratamentos por Consulta ---");
                     System.out.print("Digite o ID da consulta.html para ver os tratamentos associados: ");
-                    int idConsultaParaListar = entrada.nextInt();
-                    entrada.nextLine(); // Limpa o buffer
+                    int idConsultaParaListar = leitor.lerInteiro();
 
                     List<Tratamento> tratamentosDaConsulta = repositorioDeTratamento.BuscarPorConsulta(idConsultaParaListar);
 
@@ -554,8 +541,7 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine(); // Limpa o buffer
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
@@ -575,8 +561,7 @@ public class SistemaClinicaVet {
                     System.out.println("1. Pet (Doméstico)");
                     System.out.println("2. Animal Exótico");
                     System.out.print("Opção: ");
-                    int tipo = entrada.nextInt();
-                    entrada.nextLine();
+                    int tipo = leitor.lerInteiro();
                     System.out.print("Nome: ");
                     String nome = entrada.nextLine();
                     System.out.print("Espécie: ");
@@ -584,8 +569,7 @@ public class SistemaClinicaVet {
                     System.out.print("Porte (P, M, G): ");
                     String porte = entrada.nextLine();
                     System.out.print("Idade: ");
-                    int idade = entrada.nextInt();
-                    entrada.nextLine(); // Limpar buffer
+                    int idade = leitor.lerInteiro();
                     Animal novoAnimal;
 
                     if (tipo == 1) { //Só pra indentificar se é pet ou exótico (Pet = 1, Exótico = 2)
@@ -650,8 +634,7 @@ public class SistemaClinicaVet {
                 case 3:
                     System.out.println("--- Buscar Animal por ID ---");
                     System.out.print("Digite o ID do animal: ");
-                    int idBusca = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idBusca = leitor.lerInteiro();
 
                     Animal animalEncontrado = repositorioDeAnimal.BuscarPorId(idBusca);
 
@@ -679,8 +662,7 @@ public class SistemaClinicaVet {
                 case 4:
                     System.out.println("--- Atualizar Animal ---");
                     System.out.print("Digite o ID do animal que deseja atualizar: ");
-                    int idAtt = entrada.nextInt();
-                    entrada.nextLine(); // Limpar buffer
+                    int idAtt = leitor.lerInteiro();
 
                     Animal animalAtt = repositorioDeAnimal.BuscarPorId(idAtt);
 
@@ -709,9 +691,9 @@ public class SistemaClinicaVet {
                     }
 
                     System.out.print("Nova Idade (" + animalAtt.getIdade() + "): ");
-                    String idadeAttStr = entrada.nextLine();
-                    if (!idadeAttStr.trim().isEmpty()) {
-                        animalAtt.setIdade(Integer.parseInt(idadeAttStr));
+                    Integer idadeAtt = leitor.lerInteiroOpcional();
+                    if (idadeAtt != null) {
+                        animalAtt.setIdade(idadeAtt);
                     }
                     if (animalAtt instanceof Pet) {
                         System.out.print("Novo RFID (" + ((Pet) animalAtt).getrfid() + "): ");
@@ -741,8 +723,7 @@ public class SistemaClinicaVet {
                 case 5:
                     System.out.println("--- Excluir Animal ---");
                     System.out.print("Digite o ID do animal que deseja excluir: ");
-                    int idDel = entrada.nextInt();
-                    entrada.nextLine(); // Limpar buffer
+                    int idDel = leitor.lerInteiro();
 
                     Animal animalDel = repositorioDeAnimal.BuscarPorId(idDel); //
                     if (animalDel == null) {
@@ -821,8 +802,7 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao menu principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine(); // Limpa o buffer
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
@@ -837,8 +817,7 @@ public class SistemaClinicaVet {
                 case 2:
                     System.out.println("\n--- Buscar Especialidade por ID ---");
                     System.out.print("Digite o ID da especialidade que deseja buscar: ");
-                    int idParaBuscar = entrada.nextInt();
-                    entrada.nextLine(); // Limpa o buffer
+                    int idParaBuscar = leitor.lerInteiro();
 
                     Especialidade especialidadeEncontrada = repositorioDeEspecialidade.BuscarEspecialidade(idParaBuscar);
 
@@ -886,8 +865,7 @@ public class SistemaClinicaVet {
                 case 5:
                     System.out.println("\n--- Atualizar Nome da Especialidade ---");
                     System.out.print("Digite o ID da especialidade que deseja atualizar: ");
-                    int idAtt = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idAtt = leitor.lerInteiro();
 
                     Especialidade espAtt = repositorioDeEspecialidade.BuscarEspecialidade(idAtt);
                     if (espAtt == null) {
@@ -906,8 +884,7 @@ public class SistemaClinicaVet {
                 case 6:
                     System.out.println("\n--- Deletar Especialidade ---");
                     System.out.print("Digite o ID da especialidade que deseja deletar: ");
-                    int idDel = entrada.nextInt();
-                    entrada.nextLine(); // Limpa buffer
+                    int idDel = leitor.lerInteiro();
 
                     System.out.print("Tem certeza que deseja deletar? (S/N): ");
                     if (entrada.nextLine().equalsIgnoreCase("S")) {
@@ -946,8 +923,7 @@ public class SistemaClinicaVet {
             System.out.println("0. Voltar ao Menu Principal");
             System.out.print("Escolha uma opção: ");
 
-            int opcao = entrada.nextInt();
-            entrada.nextLine();
+            int opcao = leitor.lerInteiro();
 
             switch (opcao) {
                 case 1:
@@ -964,8 +940,7 @@ public class SistemaClinicaVet {
                     System.out.println("Veterinário encontrado: " + vet.getNome());
 
                     System.out.print("Digite o ID da Especialidade (que é auto_increment): ");
-                    int espId = entrada.nextInt();
-                    entrada.nextLine();
+                    int espId = leitor.lerInteiro();
                     Especialidade esp = repositorioDeEspecialidade.BuscarEspecialidade(espId);
 
                     if (esp == null) {
