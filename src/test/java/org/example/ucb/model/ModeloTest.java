@@ -40,6 +40,15 @@ class ModeloTest {
     }
 
     @Test
+    @DisplayName("Exotico: o construtor completo grava RFIDEX e nota fiscal (#4, java:S1656)")
+    void exoticoGuardaRfidexENotaFiscal() {
+        Exotico iggy = new Exotico(3, "Iggy", "Pequeno", 2, "Iguana", "RFIDEX-1", "NF-123", dono);
+        assertEquals("RFIDEX-1", iggy.getRfidex());
+        assertEquals("NF-123", iggy.getNotaFiscal());
+        assertEquals("Iguana", iggy.getEspecie());
+    }
+
+    @Test
     @DisplayName("Consulta: liga o animal e o veterinário atendidos")
     void consultaLigaAnimalEVeterinario() {
         Pet pet = new Pet(1, "Rex", "Médio", 3, "Cão", "RFID-1", dono);

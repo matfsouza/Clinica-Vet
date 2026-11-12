@@ -137,7 +137,7 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
                     stmtPet.executeUpdate();
                 }
             } else if (animal instanceof Exotico exotico) {
-                String sqlExotico = "UPDATE Exotico SET RFIDEX = ? WHERE animal_ID = ?";
+                String sqlExotico = "UPDATE Exotico SET Nota_Fiscal = ?, RFIDEX = ? WHERE animal_ID = ?";
                 try (PreparedStatement stmtExotico = conexao.prepareStatement(sqlExotico)) {
                     stmtExotico.setString(1, exotico.getNotaFiscal());
                     stmtExotico.setString(2, exotico.getRfidex());

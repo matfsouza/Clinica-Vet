@@ -5,7 +5,6 @@ import org.example.ucb.model.Certificacao;
 import org.example.ucb.model.Especialidade;
 import org.example.ucb.model.Veterinario;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -97,7 +96,7 @@ public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
                 veterinarioDV.setNome(rs.getString("Vet_nome"));
 
                 especialidadeDV.setId(rs.getInt("ID_especialidade"));
-                veterinarioDV.setNome(rs.getString("especialidade_nome"));
+                especialidadeDV.setNome(rs.getString("especialidade_nome"));
 
                 certificacaoDV.setNumeroRegistro(rs.getString("NumeroRegistro"));
                 certificacaoDV.setDataObtencao(rs.getDate("DataObtencao").toLocalDate());

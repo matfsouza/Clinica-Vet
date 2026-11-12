@@ -9,9 +9,9 @@ public class Exotico extends Animal {
         super();
     }
 
-    public Exotico(int id, String nome,String porte, int idade, String especie, String rfid, Dono dono) {
+    public Exotico(int id, String nome, String porte, int idade, String especie, String rfidex, String notaFiscal, Dono dono) {
         super(id, nome, porte, idade, especie, dono);
-        this.rfidex = rfid;
+        this.rfidex = rfidex;
         this.notaFiscal = notaFiscal;
     }
 
