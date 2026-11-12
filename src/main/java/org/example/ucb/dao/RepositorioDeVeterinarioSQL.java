@@ -10,11 +10,21 @@ import java.util.ArrayList;
 
 public class RepositorioDeVeterinarioSQL implements RepositorioDeVeterinario {
 
+    private final ConexaoBD conexaoBD;
+
+    public RepositorioDeVeterinarioSQL() {
+        this(new ConexaoMySQL());
+    }
+
+    public RepositorioDeVeterinarioSQL(ConexaoBD conexaoBD) {
+        this.conexaoBD = conexaoBD;
+    }
+
     @Override
     public void salvar(Veterinario veterinario) {
         String sql = "INSERT INTO veterinario (crmv, nome, idade, data_Graduacao) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)){
 
             stmt.setString(1, veterinario.getCrmv());
@@ -40,7 +50,7 @@ public class RepositorioDeVeterinarioSQL implements RepositorioDeVeterinario {
         String sql = "SELECT * FROM veterinario WHERE crmv = ?";
         Veterinario vetEncontrado = null;
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, crmv);
@@ -68,7 +78,7 @@ public class RepositorioDeVeterinarioSQL implements RepositorioDeVeterinario {
     String sql = "SELECT * FROM veterinario";
     List<Veterinario> veterinarios = new ArrayList<>();
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -98,7 +108,7 @@ public class RepositorioDeVeterinarioSQL implements RepositorioDeVeterinario {
     public void atualizar(Veterinario veterinario) {
         String sql = "UPDATE veterinario SET nome = ?, idade = ?, data_Graduacao = ? WHERE crmv = ?";
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, veterinario.getNome());
@@ -124,7 +134,7 @@ public class RepositorioDeVeterinarioSQL implements RepositorioDeVeterinario {
     public boolean deletarVet(String crmv) {
         String sql = "DELETE FROM veterinario WHERE crmv = ?";
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, crmv);

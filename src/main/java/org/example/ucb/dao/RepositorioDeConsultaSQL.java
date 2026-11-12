@@ -12,11 +12,21 @@ import java.util.List;
 
 public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
 
+    private final ConexaoBD conexaoBD;
+
+    public RepositorioDeConsultaSQL() {
+        this(new ConexaoMySQL());
+    }
+
+    public RepositorioDeConsultaSQL(ConexaoBD conexaoBD) {
+        this.conexaoBD = conexaoBD;
+    }
+
     @Override
     public void salvar(Consulta consulta) {
             String sql = "INSERT INTO consulta.html (diagnostico, id_animal, CRMV_veterinario) VALUES (?, ?, ?)";
 
-            try (Connection conexao = new ConexaoMySQL().obterConexao();
+            try (Connection conexao = conexaoBD.obterConexao();
                  PreparedStatement stmt = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
                 stmt.setString(1, consulta.getdiagnostico());
@@ -45,7 +55,7 @@ public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
 
         Consulta consulta = null;
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
@@ -80,7 +90,7 @@ public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
         List<Consulta> consultas = new ArrayList<>();
         String sql = "SELECT co.*, a.Nome as animal_nome, v.nome as vet_nome FROM consulta.html co INNER JOIN Animal a ON co.id_animal = a.ID INNER JOIN veterinario v ON co.CRMV_veterinario = v.CRMV";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              Statement stmt = conexao.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -116,7 +126,7 @@ public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
     List<Consulta> consultas = new ArrayList<>();
     String sql = "SELECT co.*, a.Nome as animal_nome, v.nome as vet_nome FROM consulta.html co INNER JOIN Animal a ON co.id_animal = a.ID INNER JOIN veterinario v ON co.CRMV_veterinario = v.CRMV WHERE co.id_animal = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
     PreparedStatement stmt = conexao.prepareStatement(sql)) {
         stmt.setInt(1, id);
 
@@ -152,7 +162,7 @@ public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
     public void atualizarConsulta(Consulta consulta) {
     String sql = "UPDATE consulta.html SET diagnostico = ?, id_animal = ?, CRMV_veterinario = ? WHERE id = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
     PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
         stmt.setString(1, consulta.getdiagnostico());
@@ -172,7 +182,7 @@ public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
     public boolean deletarConsulta(int id) {
     String sql = "DELETE FROM consulta.html WHERE id = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
     PreparedStatement stmt = conexao.prepareStatement(sql)) {
         stmt.setInt(1, id);
 

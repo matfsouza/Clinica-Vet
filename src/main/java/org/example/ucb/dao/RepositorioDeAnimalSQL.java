@@ -16,12 +16,22 @@ import java.util.List;
 
 public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
 
+    private final ConexaoBD conexaoBD;
+
+    public RepositorioDeAnimalSQL() {
+        this(new ConexaoMySQL());
+    }
+
+    public RepositorioDeAnimalSQL(ConexaoBD conexaoBD) {
+        this.conexaoBD = conexaoBD;
+    }
+
     @Override
     public void salvar(Animal animal) {
         //"Instrução" para o SQL
         String sqlAnimal = "INSERT INTO Animal (Especie, CPF_Dono, Nome, Idade, Porte) VALUES (?, ?, ?, ?, ?)";
         //Tenta fazer a conexão com o banco
-        try (Connection conexao = new ConexaoMySQL().obterConexao()) {
+        try (Connection conexao = conexaoBD.obterConexao()) {
 
             try (PreparedStatement stmtAnimal = conexao.prepareStatement(sqlAnimal, Statement.RETURN_GENERATED_KEYS)) {
                 //Inserção dos dados
@@ -73,7 +83,7 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
 
         Animal animal = null;
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)){
 
             stmt.setInt(1, id);
@@ -112,9 +122,9 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
         List<Animal> animais = new ArrayList<>();
 
         String sql = "SELECT a.*, p.RFID, e.Nota_Fiscal, e.RFIDEX FROM Animal a LEFT JOIN Pet p ON a.ID = p.animal_ID LEFT JOIN Exotico e ON a.ID = e.animal_ID";
-        RepositorioDeDono repositorioDonos = new RepositorioDeDonoSQL();
+        RepositorioDeDono repositorioDonos = new RepositorioDeDonoSQL(conexaoBD);
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              Statement stmt = conexao.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()){
@@ -156,7 +166,7 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
         List<Animal> animaisDoDono = new ArrayList<>();
         String sql = "SELECT a.*, p.RFID, e.Nota_Fiscal, e.RFIDEX FROM Animal a LEFT JOIN Pet p ON a.ID = p.animal_ID LEFT JOIN Exotico e ON a.ID = e.animal_ID WHERE a.CPF_dono = ?";
 
-                try (Connection conexao = new ConexaoMySQL().obterConexao();
+                try (Connection conexao = conexaoBD.obterConexao();
                      PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
                     stmt.setString(1, CpfDono);
@@ -203,7 +213,7 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
         String sqlDeletePet = "DELETE FROM Pet WHERE animal_ID = ?";
         String sqlDeleteExotico = "DELETE FROM Exotico WHERE animal_ID = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao()) {
+        try (Connection conexao = conexaoBD.obterConexao()) {
             try(PreparedStatement stmtSelect = conexao.prepareStatement(sqlSELECT)) {
                 stmtSelect.setInt(1, id);
                 try (ResultSet rs = stmtSelect.executeQuery()) {
@@ -236,7 +246,7 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
     @Override
     public void atualizar(Animal animal) {
         String sqlAnimal = "UPDATE Animal SET Nome = ?,Especie = ?, Idade = ?, Porte = ? WHERE ID = ?";
-        try (Connection conexao = new ConexaoMySQL().obterConexao()) {
+        try (Connection conexao = conexaoBD.obterConexao()) {
             try(PreparedStatement stmtAnimal = conexao.prepareStatement(sqlAnimal)) {
                 stmtAnimal.setString(1, animal.getNome());
                 stmtAnimal.setString(2, animal.getEspecie());

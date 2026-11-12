@@ -14,7 +14,11 @@ public class RepositorioDeEspecialidadeSQL implements RepositorioDeEspecialidade
     private final ConexaoBD conexaoBD;
 
     public RepositorioDeEspecialidadeSQL() {
-        this.conexaoBD = new ConexaoMySQL();
+        this(new ConexaoMySQL());
+    }
+
+    public RepositorioDeEspecialidadeSQL(ConexaoBD conexaoBD) {
+        this.conexaoBD = conexaoBD;
     }
 
     @Override
@@ -165,7 +169,7 @@ public class RepositorioDeEspecialidadeSQL implements RepositorioDeEspecialidade
     public void atualizarEspecialidade(Especialidade especialidade) {
         String sql = "UPDATE Especialidade SET nome = ? WHERE IDespecialidade = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, especialidade.getNome());
@@ -184,7 +188,7 @@ public class RepositorioDeEspecialidadeSQL implements RepositorioDeEspecialidade
     public boolean deletarEspecialidade(int id) {
         String sql = "DELETE FROM Especialidade WHERE IDespecialidade = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setInt(1, id);

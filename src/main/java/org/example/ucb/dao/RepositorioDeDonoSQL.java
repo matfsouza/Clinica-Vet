@@ -14,11 +14,21 @@ import java.util.List;
 
 public class RepositorioDeDonoSQL implements RepositorioDeDono {
 
+    private final ConexaoBD conexaoBD;
+
+    public RepositorioDeDonoSQL() {
+        this(new ConexaoMySQL());
+    }
+
+    public RepositorioDeDonoSQL(ConexaoBD conexaoBD) {
+        this.conexaoBD = conexaoBD;
+    }
+
     @Override
     public void salvar(Dono dono) {
         String sql = "INSERT INTO dono (CPF, Nome, Endereco, data_nasc) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, dono.getCPF());
             stmt.setString(2, dono.getNome());
@@ -38,7 +48,7 @@ public class RepositorioDeDonoSQL implements RepositorioDeDono {
         String sql = "SELECT * FROM dono WHERE CPF = ?";
         Dono donoEncontrado = null;
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, cpf);
@@ -64,7 +74,7 @@ public class RepositorioDeDonoSQL implements RepositorioDeDono {
         String sql = "SELECT * FROM dono";
         List<Dono> donos = new ArrayList<>();
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -92,7 +102,7 @@ public class RepositorioDeDonoSQL implements RepositorioDeDono {
     public void atualizar(Dono dono) {
         String sql = "UPDATE dono SET Nome = ?, Endereco = ?, data_nasc = ? WHERE CPF = ?";
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, dono.getNome());
@@ -116,7 +126,7 @@ public class RepositorioDeDonoSQL implements RepositorioDeDono {
     public boolean deletarDono(String cpf) {
         String sql = "DELETE FROM dono WHERE CPF = ?";
 
-        try (Connection conn = new ConexaoMySQL().obterConexao();
+        try (Connection conn = conexaoBD.obterConexao();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, cpf);

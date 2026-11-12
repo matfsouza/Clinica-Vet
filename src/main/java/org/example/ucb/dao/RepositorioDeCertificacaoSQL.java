@@ -18,11 +18,21 @@ import java.util.List;
 
 public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
 
+    private final ConexaoBD conexaoBD;
+
+    public RepositorioDeCertificacaoSQL() {
+        this(new ConexaoMySQL());
+    }
+
+    public RepositorioDeCertificacaoSQL(ConexaoBD conexaoBD) {
+        this.conexaoBD = conexaoBD;
+    }
+
     @Override
     public void salvar(Certificacao certificacao) {
         String sql = "INSERT INTO Certificacao (NumeroRegistro, DataObtencao, InstituicaoCertificadora, CRMV_certif, ID_especialidade) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, certificacao.getNumeroRegistro());
             stmt.setDate(2, java.sql.Date.valueOf(certificacao.getDataObtencao()));
@@ -43,7 +53,7 @@ public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
         String sql = "SELECT c.*, e.nome as especialidade_nome, v.nome as vet_nome FROM Certificacao c INNER JOIN Especialidade e ON c.ID_especialidade = e.IDespecialidade INNER JOIN veterinario v ON c.CRMV_certif = v.CRMV WHERE c.NumeroRegistro = ?";
         Certificacao certificacao = null;
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, numeroregistro);
@@ -78,7 +88,7 @@ public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
         String sql = "SELECT c.*, e.nome as especialidade_nome, v.nome as Vet_nome FROM Certificacao c INNER JOIN Especialidade e ON c.ID_especialidade = e.IDespecialidade INNER JOIN Veterinario v ON c.CRMV_certif = v.CRMV";
         List<Certificacao> certificacoes= new ArrayList<>();
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              Statement stmt =   conexao.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -114,7 +124,7 @@ public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
 
         String sql = "SELECT c.*, e.nome as especialidade_nome, v.nome as Vet_nome FROM Certificacao c INNER JOIN Especialidade e ON c.ID_especialidade = e.IDespecialidade INNER JOIN Veterinario v ON c.CRMV_certif = v.CRMV WHERE v.CRMV = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, crmv);
@@ -151,7 +161,7 @@ public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
     public boolean deletarCertificacao(String numeroRegistro) {
         String sql = "DELETE FROM Certificacao WHERE NumeroRegistro = ?";
 
-        try (Connection conexao = new ConexaoMySQL().obterConexao();
+        try (Connection conexao = conexaoBD.obterConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, numeroRegistro);
