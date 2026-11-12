@@ -23,10 +23,6 @@ public class RepositorioDeAnimalSQL implements RepositorioDeAnimal {
 
     private final ConexaoBD conexaoBD;
 
-    public RepositorioDeAnimalSQL() {
-        this(new ConexaoMySQL());
-    }
-
     public RepositorioDeAnimalSQL(ConexaoBD conexaoBD) {
         this.conexaoBD = conexaoBD;
     }

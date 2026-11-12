@@ -14,10 +14,6 @@ public class RepositorioDeConsultaSQL implements RepositorioDeConsulta {
 
     private final ConexaoBD conexaoBD;
 
-    public RepositorioDeConsultaSQL() {
-        this(new ConexaoMySQL());
-    }
-
     public RepositorioDeConsultaSQL(ConexaoBD conexaoBD) {
         this.conexaoBD = conexaoBD;
     }

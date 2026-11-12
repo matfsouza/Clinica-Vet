@@ -16,10 +16,6 @@ public class RepositorioDeTratamentoSQL implements RepositorioDeTratamento {
 
     private final ConexaoBD conexaoBD;
 
-    public RepositorioDeTratamentoSQL() {
-        this(new ConexaoMySQL());
-    }
-
     public RepositorioDeTratamentoSQL(ConexaoBD conexaoBD) {
         this.conexaoBD = conexaoBD;
     }

@@ -14,10 +14,6 @@ public class RepositorioDeEspecialidadeSQL implements RepositorioDeEspecialidade
 
     private final ConexaoBD conexaoBD;
 
-    public RepositorioDeEspecialidadeSQL() {
-        this(new ConexaoMySQL());
-    }
-
     public RepositorioDeEspecialidadeSQL(ConexaoBD conexaoBD) {
         this.conexaoBD = conexaoBD;
     }

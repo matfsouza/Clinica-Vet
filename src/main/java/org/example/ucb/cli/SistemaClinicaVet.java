@@ -25,20 +25,21 @@ public class SistemaClinicaVet {
             exibirMenuPrincipal();
         } catch (Exception e) {
             System.err.println("ERRO FATAL NO SISTEMA: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             entrada.close();
         }
     }
 
     private static void configurarDependencias() {
-        repositorioDeTratamento = new RepositorioDeTratamentoSQL();
-        repositorioDeEspecialidade = new RepositorioDeEspecialidadeSQL();
-        repositorioDeAnimal = new RepositorioDeAnimalSQL();
-        repositorioDeDono = new RepositorioDeDonoSQL();
-        repositorioDeVeterinario = new RepositorioDeVeterinarioSQL();
-        repositorioDeCertificacao = new RepositorioDeCertificacaoSQL();
-        repositorioDeConsulta = new RepositorioDeConsultaSQL();
+        // Único ponto que escolhe o banco: os DAOs recebem a conexão pronta.
+        ConexaoBD conexao = new ConexaoMySQL();
+        repositorioDeTratamento = new RepositorioDeTratamentoSQL(conexao);
+        repositorioDeEspecialidade = new RepositorioDeEspecialidadeSQL(conexao);
+        repositorioDeAnimal = new RepositorioDeAnimalSQL(conexao);
+        repositorioDeDono = new RepositorioDeDonoSQL(conexao);
+        repositorioDeVeterinario = new RepositorioDeVeterinarioSQL(conexao);
+        repositorioDeCertificacao = new RepositorioDeCertificacaoSQL(conexao);
+        repositorioDeConsulta = new RepositorioDeConsultaSQL(conexao);
     }
 
     private static void exibirMenuPrincipal() {

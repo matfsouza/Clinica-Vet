@@ -20,10 +20,6 @@ public class RepositorioDeCertificacaoSQL implements RepositorioDeCertificacao {
 
     private final ConexaoBD conexaoBD;
 
-    public RepositorioDeCertificacaoSQL() {
-        this(new ConexaoMySQL());
-    }
-
     public RepositorioDeCertificacaoSQL(ConexaoBD conexaoBD) {
         this.conexaoBD = conexaoBD;
     }

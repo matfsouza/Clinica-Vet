@@ -16,10 +16,6 @@ public class RepositorioDeDonoSQL implements RepositorioDeDono {
 
     private final ConexaoBD conexaoBD;
 
-    public RepositorioDeDonoSQL() {
-        this(new ConexaoMySQL());
-    }
-
     public RepositorioDeDonoSQL(ConexaoBD conexaoBD) {
         this.conexaoBD = conexaoBD;
     }
