@@ -30,7 +30,7 @@ docs/banco/schema.sql                    Script de criação do banco
 
 ## Pré-requisitos
 
-- **JDK 24 ou superior**. O `pom.xml` define `maven.compiler.source/target = 24`; com um JDK mais antigo o Maven falha com `invalid target release: 24`.
+- **JDK 21 ou superior**. O `pom.xml` compila com `maven.compiler.release = 21` (LTS).
 - **Maven 3.9+**, ou o IntelliJ IDEA, que já traz o Maven embutido.
 - **MySQL 8** em `localhost:3306`.
 
@@ -42,7 +42,25 @@ docs/banco/schema.sql                    Script de criação do banco
    mysql -u root -p < docs/banco/schema.sql
    ```
 
-2. Ajuste as credenciais em `src/main/java/org/example/ucb/dao/ConexaoMySQL.java` (`URL`, `USUARIO`, `SENHA`). A conexão padrão é `jdbc:mysql://localhost:3306/clinica` com o usuário `root`.
+2. Defina as credenciais em variáveis de ambiente. O código não guarda nenhuma senha.
+
+   | Variável | Obrigatória | Padrão |
+   |---|---|---|
+   | `CLINICA_DB_PASSWORD` | sim | (nenhum) |
+   | `CLINICA_DB_USER` | não | `root` |
+   | `CLINICA_DB_URL` | não | `jdbc:mysql://localhost:3306/clinica` |
+
+   ```bash
+   # Linux / macOS
+   export CLINICA_DB_PASSWORD='sua-senha'
+   ```
+
+   ```powershell
+   # Windows (PowerShell)
+   $env:CLINICA_DB_PASSWORD = 'sua-senha'
+   ```
+
+   No IntelliJ, as variáveis ficam em *Run → Edit Configurations → Environment variables*. Sem `CLINICA_DB_PASSWORD`, o sistema avisa qual variável falta.
 
 3. **Nomes de tabela e maiúsculas/minúsculas:** o código usa os mesmos nomes com grafias diferentes (por exemplo `Veterinario` e `veterinario`). No Windows isso funciona porque o MySQL já vem com `lower_case_table_names=1`. No Linux ou no macOS, o servidor precisa ser **inicializado** com `lower_case_table_names=1`. Sem isso, parte das consultas falha.
 
@@ -68,14 +86,23 @@ java -cp "target/classes:target/dependency/*" org.example.ucb.cli.SistemaClinica
 
 **Frontend:** abra `src/main/frontend/templates/index.html` no navegador. É um protótipo e os dados ficam só na memória da página.
 
-## Limitações conhecidas (baseline `v1.0-baseline`)
+## Testes
 
-Levantadas no diagnóstico de qualidade. Serão tratadas na segunda parte do projeto.
+```bash
+mvn verify
+```
 
-- **Módulo de consultas quebrado:** as queries de `RepositorioDeConsultaSQL` usam a tabela `consulta.html` em vez de `consulta` (mudança introduzida no commit `6eadb4f`). Toda operação de consulta falha, e o cadastro de tratamentos, que depende de uma consulta existente, também fica bloqueado.
-- **Sem testes automatizados:** não existe `src/test`, e a cobertura é 0%.
-- **Credenciais do banco no código-fonte** (`ConexaoMySQL.java`).
-- **Entrada inválida encerra o sistema:** digitar um valor não numérico em um menu lança `InputMismatchException`, que só é capturada no `main`.
+Os testes não precisam de MySQL. Cada classe de teste cria um banco H2 em memória, no modo MySQL, a partir do próprio `docs/banco/schema.sql`. O relatório de cobertura (JaCoCo) fica em `target/site/jacoco/index.html`.
+
+O pipeline em `.github/workflows/ci.yml` roda o mesmo comando a cada push e pull request.
+
+## Limitações conhecidas (versão `v2.0-parte2`)
+
+A Parte 2 corrigiu o módulo de consultas, a atualização de animal exótico, a listagem de certificações e o encerramento da CLI com entrada não numérica (issue #4). O que continua em aberto:
+
+- **`SistemaClinicaVet` concentra os menus:** 913 linhas de código e 6 métodos com complexidade ciclomática acima de 15 (máximo 36, em `exibirMenuAnimais`). Os menus não têm teste automatizado.
+- **Sem validação de dados:** CPF, idade (aceita negativo) e porte são gravados como o usuário digita.
+- **Cadastro de animal sem transação:** o animal e o subtipo (Pet ou Exotico) entram em dois INSERTs separados.
 - **Frontend não integrado:** `index.html` não se comunica com o backend Java.
 
 ## Fluxo de contribuição
