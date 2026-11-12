@@ -95,6 +95,23 @@ class RepositorioDeAnimalSQLTest {
     }
 
     @Test
+    @DisplayName("atualiza RFIDEX e nota fiscal de um exótico (#4)")
+    void atualizaExotico() {
+        Exotico iggy = DadosDeTeste.exotico("Iggy", ana);
+        repositorio.salvar(iggy);
+        iggy.setNome("Iggy Pop");
+        iggy.setRfidex("RFIDEX-NOVO");
+        iggy.setNotaFiscal("NF-NOVA");
+
+        repositorio.atualizar(iggy);
+
+        Exotico encontrado = (Exotico) repositorio.BuscarPorId(iggy.getId());
+        assertEquals("Iggy Pop", encontrado.getNome());
+        assertEquals("RFIDEX-NOVO", encontrado.getRfidex());
+        assertEquals("NF-NOVA", encontrado.getNotaFiscal());
+    }
+
+    @Test
     @DisplayName("deleta um pet junto com o registro do subtipo")
     void deletaPet() {
         Pet rex = DadosDeTeste.pet("Rex", ana);

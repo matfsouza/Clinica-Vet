@@ -64,6 +64,17 @@ class RepositorioDeCertificacaoSQLTest {
     }
 
     @Test
+    @DisplayName("listagem mostra o nome do veterinário e o da especialidade, cada um no seu campo")
+    void listaComNomesCorretos() {
+        repositorio.salvar(certificacao("REG-1"));
+
+        Certificacao listada = repositorio.ListarCertificacao().get(0);
+
+        assertEquals("Dra. Bia", listada.getVeterinario().getNome());
+        assertEquals("Dermatologia", listada.getEspecialidade().getNome());
+    }
+
+    @Test
     @DisplayName("deleta uma certificação e devolve false na segunda vez")
     void deleta() {
         repositorio.salvar(certificacao("REG-1"));
