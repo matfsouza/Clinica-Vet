@@ -96,12 +96,13 @@ Os testes não precisam de MySQL. Cada classe de teste cria um banco H2 em memó
 
 O pipeline em `.github/workflows/ci.yml` roda o mesmo comando a cada push e pull request.
 
-## Limitações conhecidas (baseline `v1.0-baseline`)
+## Limitações conhecidas (versão `v2.0-parte2`)
 
-Levantadas no diagnóstico de qualidade. Serão tratadas na segunda parte do projeto.
+A Parte 2 corrigiu o módulo de consultas, a atualização de animal exótico, a listagem de certificações e o encerramento da CLI com entrada não numérica (issue #4). O que continua em aberto:
 
-- **Módulo de consultas quebrado:** as queries de `RepositorioDeConsultaSQL` usam a tabela `consulta.html` em vez de `consulta` (mudança introduzida no commit `6eadb4f`). Toda operação de consulta falha, e o cadastro de tratamentos, que depende de uma consulta existente, também fica bloqueado.
-- **Entrada inválida encerra o sistema:** digitar um valor não numérico em um menu lança `InputMismatchException`, que só é capturada no `main`.
+- **`SistemaClinicaVet` concentra os menus:** 913 linhas de código e 6 métodos com complexidade ciclomática acima de 15 (máximo 36, em `exibirMenuAnimais`). Os menus não têm teste automatizado.
+- **Sem validação de dados:** CPF, idade (aceita negativo) e porte são gravados como o usuário digita.
+- **Cadastro de animal sem transação:** o animal e o subtipo (Pet ou Exotico) entram em dois INSERTs separados.
 - **Frontend não integrado:** `index.html` não se comunica com o backend Java.
 
 ## Fluxo de contribuição
