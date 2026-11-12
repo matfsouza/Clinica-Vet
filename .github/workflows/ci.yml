@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-e-testes:
+    name: Build e testes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Compilar e rodar os testes
+        run: mvn -B verify
+
+      - name: Resumo da cobertura (JaCoCo)
+        if: always()
+        run: |
+          if [ -f target/site/jacoco/jacoco.csv ]; then
+            awk -F, 'NR>1 {m+=$8; c+=$9} END {printf "Cobertura de linhas: %.1f%% (%d de %d linhas)\n", 100*c/(m+c), c, m+c}' target/site/jacoco/jacoco.csv | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Publicar relatórios de teste e cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorios
+          path: |
+            target/surefire-reports/
+            target/site/jacoco/
+          if-no-files-found: ignore
